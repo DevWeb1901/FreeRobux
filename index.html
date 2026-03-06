@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>C:\WINDOWS\System32\Dopaztry.exe</title>
+    <style>
+        /* --- WINDOWS CLASSIC SYSTEM DESIGN --- */
+        body { background: #008080; color: #000; font-family: 'Tahoma', 'Verdana', sans-serif; margin: 0; overflow: hidden; user-select: none; }
+        
+        #win-box { 
+            width: 90%; max-width: 480px; background: #c0c0c0; border: 3px solid #fff; 
+            border-right: 3px solid #444; border-bottom: 3px solid #444;
+            box-shadow: 10px 10px 60px #000; position: absolute; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%); display: none; z-index: 100;
+        }
+
+        .title-bar { 
+            background: linear-gradient(90deg, #000080, #1084d0); color: #fff; padding: 6px; 
+            display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; align-items: center;
+        }
+
+        .win-body { padding: 25px; text-align: center; border-top: 1px solid #808080; }
+        
+        .terminal-shell { 
+            background: #000; color: #0f0; font-family: 'Courier New', monospace; 
+            text-align: left; padding: 12px; font-size: 12px; height: 100px; overflow: hidden; border: 3px inset #fff; margin-bottom: 15px;
+        }
+
+        .warning-label { color: #f00; font-weight: bold; font-size: 20px; margin: 15px 0; text-transform: uppercase; animation: blink 0.4s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.1; } 100% { opacity: 1; } }
+
+        #video-container { width: 100%; height: 210px; background: #000; border: 3px inset #fff; margin-bottom: 15px; display: none; }
+        video { width: 100%; height: 100%; object-fit: contain; }
+
+        input { 
+            width: 85%; padding: 15px; margin-top: 15px; border: 3px inset #fff; background: #fff; 
+            font-family: monospace; outline: none; font-size: 18px; text-align: center; color: #000;
+        }
+
+        button { 
+            margin-top: 15px; padding: 12px 40px; background: #c0c0c0; border: 3px solid #fff; 
+            border-right: 3px solid #444; border-bottom: 3px solid #444;
+            cursor: pointer; font-weight: bold; font-size: 14px; text-transform: uppercase;
+        }
+        button:active { border: 3px inset #fff; background: #d0d0d0; }
+
+        #boot-screen { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; 
+            z-index: 1000; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 15px solid #f00; box-sizing: border-box;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<!-- TRIGGER SCREEN -->
+<div id="boot-screen" onclick="executeInfection()">
+    <div style="text-align:center; color:#fff;">
+        <img src="https://win98icons.alexmeub.com" width="100" style="filter: drop-shadow(0 0 20px #f00);"><br>
+        <p style="margin-top:25px; font-size: 22px; font-weight: bold; letter-spacing: 2px;">RUN DOPAZTRY.EXE</p>
+        <p style="color: #666; font-size: 12px;">Version: V-OMEGA (Stable)</p>
+    </div>
+</div>
+
+<div id="win-box">
+    <div class="title-bar">
+        <span>C:\WINDOWS\System32\Dopaztry.exe</span>
+        <div style="background:#c0c0c0; border:1px solid #fff; color:#000; width: 22px; height: 20px; line-height: 18px; text-align: center; cursor:not-allowed;">X</div>
+    </div>
+    <div class="win-body">
+        <div class="warning-label">⚠️ DATA KAMU SUDAH SAYA AMBIL!</div>
+        
+        <div class="terminal-shell" id="termLog"></div>
+
+        <div id="video-container">
+            <!-- FILE VIDEO MANUAL TERPISAH (video.mp4) -->
+            <video id="modVid" loop playsinline src="video.mp4"></video>
+        </div>
+
+        <p style="font-size: 12px; font-weight: bold; margin-bottom: 5px;">LICENSE KEY REQUIRED FOR SYSTEM RECOVERY:</p>
+        <input type="password" id="keyIn" placeholder="Enter License Key...">
+        <br>
+        <button onclick="finalVerify()">DECRYPT SYSTEM</button>
+        <p style="font-size: 10px; color: #555; margin-top: 20px;">Dopaztry &copy; 2024 - 2025 | Gigs & Xyren Lab</p>
+    </div>
+</div>
+
+<script>
+    // --- ABSOLUTE NO-BACK HIJACKING ---
+    function antiEscape() {
+        window.history.pushState(null, "", window.location.href);
+        window.onpopstate = () => {
+            window.history.pushState(null, "", window.location.href);
+            alert("FATAL ERROR: Dopaztry.exe has seized control of system navigation.");
+            if (navigator.vibrate) navigator.vibrate(500);
+        };
+    }
+
+    function executeInfection() {
+        // Sembunyikan Boot & Tampilkan Ransom Note
+        document.getElementById('boot-screen').style.display = 'none';
+        document.getElementById('win-box').style.display = 'block';
+        
+        // Fullscreen & No-Back
+        if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+        antiEscape();
+        setInterval(antiEscape, 500);
+
+        // Terminal Log Animation
+        let i = 0;
+        const logs = [
+            "> Initializing Dopaztry V-Omega payload...",
+            "> Gaining Userland-Root Access: SUCCESS",
+            "> Tracking IP Address: " + (Math.floor(Math.random() * 255) + "." + Math.floor(Math.random() * 255) + "." + Math.floor(Math.random() * 255) + "." + Math.floor(Math.random() * 255)),
+            "> Extracting DCIM/Camera/Documents...",
+            "> Sending data to C2 Server [DOPAZTRY_HQ]...",
+            "> SYSTEM LOCKED. PAY 1 BTC TO UNLOCK."
+        ];
+        
+        const term = document.getElementById('termLog');
+        const runner = setInterval(() => {
+            if (i < logs.length) {
+                term.innerHTML += logs[i] + "<br>";
+                i++;
+            } else { 
+                clearInterval(runner);
+                // Munculkan Video Setelah Log Selesai
+                document.getElementById('video-container').style.display = 'block';
+                const v = document.getElementById('modVid');
+                v.play().catch(e => console.log("Autoplay blocked"));
+            }
+        }, 1500);
+    }
+
+    function finalVerify() {
+        const input = document.getElementById('keyIn').value;
+        if (input === "Dopaztry") {
+            document.getElementById('modVid').pause();
+            document.body.style.background = "#fff";
+            document.getElementById('win-box').innerHTML = `
+                <div style="padding:50px; text-align:center; color:#000;">
+                    <img src="https://win98icons.alexmeub.com" width="60"><br><br>
+                    <b style="font-size: 22px;">DECRYPTION SUCCESSFUL ✅</b><br>
+                    <p>System has been restored by Dopaztry. All files are safe.</p>
+                </div>
+            `;
+            window.onpopstate = null; // Lepas navigasi
+            if (document.exitFullscreen) document.exitFullscreen();
+        } else {
+            alert("INVALID KEY! INITIALIZING PERMANENT DATA DELETION...");
+            if (navigator.vibrate) navigator.vibrate(1000);
+        }
+    }
+
+    // Blokir Inspect Element (F12, Ctrl+Shift+I, dll)
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false;
+    };
+</script>
+</body>
+</html>
